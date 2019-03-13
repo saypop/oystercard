@@ -39,8 +39,15 @@ require './lib/Oystercard.rb'
 # card = Oystercard.new
 # p card.touch_in == "Sorry, your balance is too low to start this journey."
 
+# # Step11
+# card = Oystercard.new
+# card.top_up(90)
+# card.touch_in
+# p card.entry_station
+
 # Step10
 card = Oystercard.new
 card.top_up(90)
-card.touch_in
-p card.entry_station
+card.touch_in("entry_station", 1)
+card.touch_out("exit_station", 5)
+p card.journeys

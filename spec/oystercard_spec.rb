@@ -48,4 +48,5 @@ describe Oystercard do
     subject.touch_out(exit_station_double)
     expect(subject.journeys).to eq [{:entry_station => entry_station_double, :exit_station => exit_station_double}]
   end
+
 end
