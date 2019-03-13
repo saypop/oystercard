@@ -53,4 +53,4 @@ Plan6:  If a user tries to start a journey with less than £1 then an error will
 
 |CLASSES|METHODS|VARIABLES|CONSTANTS|
 |---------|--------------|--------------|--------------|
-|card|top_up, deduct, in_journey?, in_journey?, touch_in, touch_out|@balance, @in_journey|REQUIRED_BALANCE|
+|**card**|top_up, deduct, in_journey?, in_journey?, touch_in, touch_out|@balance, @in_journey|REQUIRED_BALANCE|

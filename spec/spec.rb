@@ -1,7 +1,7 @@
 require './lib/Oystercard.rb'
-# # Step04
-# card = Oystercard.new
-# card.balance # returns value
+# Step04
+card = Oystercard.new
+card.balance # returns value
 
 # # Step05
 # card = Oystercard.new
@@ -38,3 +38,10 @@ require './lib/Oystercard.rb'
 # # Step09
 # card = Oystercard.new
 # p card.touch_in == "Sorry, your balance is too low to start this journey."
+
+# Step10
+card = Oystercard.new
+card.top_up(90)
+card.touch_in
+card.touch_out
+p card.balance == 88

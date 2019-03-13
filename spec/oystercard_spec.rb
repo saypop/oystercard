@@ -1,6 +1,8 @@
 require 'Oystercard'
 describe Oystercard do
 
+  let(:subject) {Oystercard.new}
+
   it 'has a balance' do
     expect(subject.balance).to eq 0
   end
@@ -19,12 +21,6 @@ describe Oystercard do
       )
     end
 
-  end
-
-  it 'able to deduct from balance' do
-    subject.top_up(90)
-    subject.deduct(10)
-    expect(subject.balance).to eq 80
   end
 
   it 'can tell us the users journey status' do
@@ -47,6 +43,11 @@ describe Oystercard do
     expect {subject.touch_in}.to raise_error{
       "Sorry, your balance is too low to start this journey."
     }
+  end
+
+  it 'charges you an amount when you touch out' do
+    subject.top_up(10)
+    expect { subject.touch_out }.to change{subject.balance}.by(-2)
   end
 
 end
