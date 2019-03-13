@@ -5,6 +5,7 @@ class Oystercard
 
 
   REQUIRED_BALANCE = 1
+  MIN_CHARGE = 2
 
   def initialize
     @balance = 0
@@ -13,10 +14,6 @@ class Oystercard
   def top_up(amount)
     raise max_reached_message if max_reached(amount)
     @balance += amount
-  end
-
-  def deduct(amount)
-    @balance -= amount
   end
 
   def in_journey?
@@ -30,6 +27,7 @@ class Oystercard
 
   def touch_out
     @entry_station = nil
+    deduct(MIN_CHARGE)
   end
 
   private
@@ -43,6 +41,10 @@ class Oystercard
 
   def min_balance_message
     "Sorry, your balance is too low to start this journey."
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 
 end
