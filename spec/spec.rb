@@ -1,4 +1,7 @@
-require './lib/Oystercard.rb'
+require './lib/oystercard.rb'
+require './lib/station.rb'
+
+#require './lib/Journey.rb'
 # # Step04
 # card = Oystercard.new
 # card.balance # returns value
@@ -39,15 +42,24 @@ require './lib/Oystercard.rb'
 # card = Oystercard.new
 # p card.touch_in == "Sorry, your balance is too low to start this journey."
 
-# # Step11
+# # Step10
 # card = Oystercard.new
 # card.top_up(90)
 # card.touch_in
 # p card.entry_station
 
-# Step10
+# # Step11
+# card = Oystercard.new
+# card.top_up(90)
+# card.touch_in("entry_station", 1)
+# card.touch_out("exit_station", 5)
+# p card.journeys
+
+# Step12
 card = Oystercard.new
+dalston = Station.new("Dalston", 2)
+earls_court = Station.new("Earl's Court", 1)
 card.top_up(90)
-card.touch_in("entry_station", 1)
-card.touch_out("exit_station", 5)
-p card.journeys
+card.touch_in(dalston)
+card.touch_out(earls_court)
+card.touch_out(earls_court)

@@ -43,6 +43,10 @@
     As a customer
     I want to know what zone a station is in
 
+11. In order to be charged correctly
+    As a customer
+    I need a penalty charge deducted if I fail to touch in or out
+
 
 
 ### Which we can break down as follows:
@@ -76,9 +80,16 @@ Plan9:    When a user completes a journey, store the entry and exit stations.
 Plan10:   When a user looks at their journey history they can see which zones they
           travelled to.
 
+Plan 11:  When a user starts a journey without ending the previous one or ends
+          one without starting charge them a penalty. Otherwise charge a standard
+          fare.
+
+
+
 
 
 |CLASSES|METHODS|VARIABLES|CONSTANTS|
 |---------|--------------|--------------|--------------|
-|**card**|top_up, deduct, in_journey?, in_journey?, touch_in, touch_out|@balance, @in_journey, @entry_station|REQUIRED_BALANCE|
+|**card**|top_up, touch_in, touch_out, update, deduct, in_journey?, max_reached_message, max_reached, min_balance_message|@balance, @journey, @journeys|REQUIRED_BALANCE|
 |**station**|   |@name, @zone|   |
+|**journey**|start, finish, in_journey?, calculate fare, process_journey, store, current, complete?|@entry_station, @exit_station, @current, @fare, @card|MIN_CHARGE, PENALTY_FARE|

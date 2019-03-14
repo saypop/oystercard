@@ -1,11 +1,10 @@
+require_relative 'journey'
+
 class Oystercard
 
-  attr_reader :balance, :entry_station, :exit_station, :journeys
-  attr_accessor :in_journey
+  attr_reader :balance, :journeys, :journey
 
-
-  REQUIRED_BALANCE = 1
-  MIN_CHARGE = 2
+  REQUIRED_BALANCE = 1 unless const_defined?(:REQUIRED_BALANCE)
 
   def initialize
     @balance = 0
@@ -17,23 +16,33 @@ class Oystercard
     @balance += amount
   end
 
-  def in_journey?
-    @entry_station
-  end
-
   def touch_in(station)
     raise min_balance_message if @balance < REQUIRED_BALANCE
-    @entry_station = station
+    @journey = Journey.new(self) if @journey.nil?
+    @journey.start(station)
   end
 
   def touch_out(station)
-    @exit_station = station
-    store_journey
-    deduct(MIN_CHARGE)
-    @entry_station, @exit_station = nil, nil
+    @journey = Journey.new(self) if @journey.nil?
+    @journey.finish(station)
+    @journey = nil
+  end
+
+  def update(journey)
+    @journeys << journey
+    p @journeys
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 
   private
+
+  def in_journey?
+    @journey.in_journey?
+  end
+
   def max_reached_message
     "Unsuccessful. You have the maximum allowed amount on your card."
   end
@@ -44,14 +53,6 @@ class Oystercard
 
   def min_balance_message
     "Sorry, your balance is too low to start this journey."
-  end
-
-  def deduct(amount)
-    @balance -= amount
-  end
-
-  def store_journey
-    @journeys << {:entry_station => @entry_station, :exit_station => @exit_station }
   end
 
 end
