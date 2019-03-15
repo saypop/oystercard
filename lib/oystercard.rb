@@ -54,14 +54,4 @@ class Oystercard
     "Sorry, your balance is too low to start this journey."
   end
 
-  def start_trip(station, journey_class)
-    @journey = journey_class.new(self) if @journey.nil?
-    @journey.start(station)
-  end
-
-  def end_trip(station, journey_class)
-    @journey = journey_class.new(self) if @journey.nil?
-    @journey.finish(station)
-  end
-
 end
