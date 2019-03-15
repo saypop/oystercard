@@ -55,11 +55,25 @@ require './lib/station.rb'
 # card.touch_out("exit_station", 5)
 # p card.journeys
 
-# Step12
+# # Step12
+# card = Oystercard.new
+# dalston = Station.new("Dalston", 2)
+# earls_court = Station.new("Earl's Court", 1)
+# card.top_up(90)
+# card.touch_in(dalston)
+# card.touch_out(earls_court)
+# card.touch_out(earls_court)
+
+# Step13
 card = Oystercard.new
+p card
+card.top_up(90)
+p card.balance
 dalston = Station.new("Dalston", 2)
 earls_court = Station.new("Earl's Court", 1)
-card.top_up(90)
+card.touch_out(earls_court)
+p card.balance
 card.touch_in(dalston)
 card.touch_out(earls_court)
-card.touch_out(earls_court)
+p card.balance
+p card.update

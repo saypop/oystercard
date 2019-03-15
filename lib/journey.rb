@@ -2,23 +2,22 @@ require_relative 'oystercard'
 
 class Journey
 
-  attr_reader :entry_station, :exit_station, :current, :fare, :card
+  attr_reader :entry_station, :exit_station, :current, :fare, :card, :journey_log
 
   MIN_CHARGE = 2
   PENALTY_FARE = 6
 
-  def initialize(card)
+  def initialize(journey_log = card.journey_log, card)
     @card = card
+    @journey_log = journey_log
   end
 
-  def start(station)
-    process_journey if in_journey?
+  def enter(station)
     @entry_station = station
   end
 
-  def finish(station)
+  def exit(station)
     @exit_station = station
-    process_journey
   end
 
   def in_journey?
@@ -31,20 +30,16 @@ class Journey
     @fare
   end
 
-  private
-
   def process_journey
     calculate_fare
     store
     @card.deduct(@fare)
   end
 
-  def store
-    @card.update(current)
-  end
+  private
 
-  def current
-    {:entry_station => @entry_station, :exit_station => @exit_station, :fare => @fare }
+  def store
+    @journey_log.update
   end
 
   def complete?

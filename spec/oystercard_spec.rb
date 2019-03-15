@@ -5,8 +5,10 @@ describe Oystercard do
   let(:exit_station_double) { double(:station) }
   let(:journey_class_double) {double(:journey_class)}
   let(:journey_double) {double(:journey)}
+  let(:journey_log_class_double) {double(:journey_log)}
+  let(:journey_log_double) {double(:journey_log)}
+  let(:subject) {Oystercard.new(journey_log_class_double, journey_log_double)}
 
-  let(:subject) {Oystercard.new}
 
   describe '#top_up' do
 
@@ -39,18 +41,15 @@ describe Oystercard do
       }
     end
 
-    it 'creates a new journey object' do
+    it 'creates a starts a new journey' do
       subject.top_up(20)
-      expect(journey_class_double).to receive(:new)
-      allow(journey_class_double).to receive(:new).with(anything).and_return(journey_double)
-      allow(journey_double).to receive(:start).with(entry_station_double)
+      expect(journey_log_double).to receive(:start)
       subject.touch_in(entry_station_double, journey_class_double)
     end
 
     it 'starts a journey' do
       subject.top_up(20)
-      allow(journey_class_double).to receive(:new).with(anything).and_return(journey_double)
-      expect(journey_double).to receive(:start).with(entry_station_double)
+      expect(journey_log_double).to receive(:start).with(entry_station_double, journey_class_double)
       subject.touch_in(entry_station_double, journey_class_double)
     end
 
@@ -59,23 +58,13 @@ describe Oystercard do
   describe '#touch_out' do
 
     it 'sets journey to nil' do
-      allow(journey_class_double).to receive(:new).with(anything).and_return(journey_double)
-      allow(journey_double).to receive(:finish).with(exit_station_double)
+      allow(journey_log_double).to receive(:finish).with(exit_station_double, journey_class_double)
       expect(subject.touch_out(exit_station_double, journey_class_double)).to eq nil
     end
 
-    it 'creates a new journey object if none exists' do
+    it 'finishes a new journey' do
       subject.top_up(20)
-      expect(journey_class_double).to receive(:new)
-      allow(journey_class_double).to receive(:new).with(anything).and_return(journey_double)
-      allow(journey_double).to receive(:finish).with(exit_station_double)
-      subject.touch_out(exit_station_double, journey_class_double)
-    end
-
-    it 'finishes a journey' do
-      subject.top_up(20)
-      allow(journey_class_double).to receive(:new).with(anything).and_return(journey_double)
-      expect(journey_double).to receive(:finish).with(exit_station_double)
+      expect(journey_log_double).to receive(:finish).with(exit_station_double, journey_class_double)
       subject.touch_out(exit_station_double, journey_class_double)
     end
 
@@ -84,7 +73,8 @@ describe Oystercard do
   describe '#update' do
 
     it 'updates a journey' do
-      expect{subject.update(journey_double)}.to change{subject.journeys}.from([]).to([journey_double])
+      expect(journey_log_double).to receive(:update)
+      subject.update
     end
 
   end

@@ -1,15 +1,16 @@
 require_relative 'journey'
+require_relative 'journey_log'
 
 class Oystercard
 
-  attr_reader :balance, :journeys, :journey
+  REQUIRED_BALANCE = 1  unless const_defined?(:REQUIRED_BALANCE)
+  MAXIMUM_BALANCE = 90  unless const_defined?(:MAX_BALANCE)
 
-  REQUIRED_BALANCE = 1 unless const_defined?(:REQUIRED_BALANCE)
-  MAXIMUM_BALANCE = 90 unless const_defined?(:MAX_BALANCE)
+  attr_reader :balance, :journey_log, :journey, :journey_log
 
-  def initialize
+  def initialize(journey_log_class = JourneyLog, journey_log = journey_log_class.new(self))
     @balance = 0
-    @journeys = []
+    @journey_log = journey_log
   end
 
   def top_up(amount)
@@ -23,16 +24,16 @@ class Oystercard
 
   def touch_in(station, journey_class = Journey)
     raise min_balance_message if @balance < REQUIRED_BALANCE
-    start_trip(station, journey_class)
+    @journey_log.start(station, journey_class)
   end
 
   def touch_out(station, journey_class = Journey)
-    end_trip(station, journey_class)
+    @journey_log.finish(station, journey_class)
     @journey = nil
   end
 
-  def update(journey)
-    @journeys << journey
+  def update
+    @journey_log.update
   end
 
   private

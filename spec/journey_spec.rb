@@ -5,14 +5,15 @@ describe Journey do
   let(:card_double) {double(:card)}
   let(:entry_station_double) {double(:station)}
   let(:exit_station_double) {double(:station)}
-  let(:subject) {Journey.new(card_double)}
+  let(:journey_log_double) {double(:journey_log)}
+  let(:subject) {Journey.new(journey_log_double, card_double)}
 
   it 'is linked to a card' do
     expect(subject.card).to eq card_double
   end
 
   it 'stores an entry station' do
-    expect(subject.start(entry_station_double)).to eq entry_station_double
+    expect{subject.enter(entry_station_double)}.to change{subject.entry_station}.from(nil).to(entry_station_double)
   end
 
   it 'can tell if there is a live journey' do
@@ -20,9 +21,7 @@ describe Journey do
   end
 
   it 'stores an exit station' do
-    allow(card_double).to receive(:deduct)
-    allow(card_double).to receive(:update)
-    expect{subject.finish(exit_station_double)}.to change{subject.exit_station}.from(nil).to(exit_station_double)
+    expect{subject.exit(exit_station_double)}.to change{subject.exit_station}.from(nil).to(exit_station_double)
   end
 
 
